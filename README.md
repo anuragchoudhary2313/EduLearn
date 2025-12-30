@@ -2,6 +2,12 @@
 
 A full-stack e-learning platform built with the MERN stack, featuring course management, video lessons, quizzes, and progress tracking.
 
+## 🌐 Live Deployment
+
+- **Frontend:** https://edu-learn-coral.vercel.app
+- **Backend API:** https://edulearn-backend-9btj.onrender.com
+- **GitHub Repository:** https://github.com/anuragchoudhary2313/EduLearn
+
 ## 🚀 Features
 
 - **User Authentication** - Secure JWT-based authentication with access and refresh tokens
