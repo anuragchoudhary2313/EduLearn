@@ -15,15 +15,27 @@ const normalizeUrl = (value) => value?.trim().replace(/\/+$/, '');
 const frontendUrl = normalizeUrl(process.env.FRONTEND_URL);
 const allowedOrigins = new Set([
   frontendUrl,
-  normalizeUrl('http://localhost:5173'),
-  normalizeUrl('https://edu-learn-coral.vercel.app')
+  normalizeUrl('http://localhost:5173')
 ].filter(Boolean));
+
+const isAllowedOrigin = (origin) => {
+  const normalizedOrigin = normalizeUrl(origin);
+  if (!normalizedOrigin) {
+    return false;
+  }
+
+  if (allowedOrigins.has(normalizedOrigin)) {
+    return true;
+  }
+
+  return /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(normalizedOrigin);
+};
 
 // --- CORS CONFIGURATION ---
 // Setting origin to 'true' allows any domain to connect (Fixes the block)
 app.use(cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.has(normalizeUrl(origin))) {
+      if (!origin || isAllowedOrigin(origin)) {
         callback(null, true);
         return;
       }
