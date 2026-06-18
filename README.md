@@ -84,6 +84,12 @@ Create a `.env` file in the frontend directory (if needed):
 VITE_API_URL=http://localhost:4000
 ```
 
+If you deploy the frontend, set `VITE_API_URL` to your Render backend URL instead:
+
+```env
+VITE_API_URL=https://edulearn-backend-9btj.onrender.com
+```
+
 ## 🚀 Running the Application
 
 ### Start Backend Server
@@ -120,6 +126,12 @@ JWT_REFRESH_SECRET=your_refresh_secret_key
 ACCESS_TOKEN_EXPIRES_IN=15m
 REFRESH_TOKEN_EXPIRES_IN=30d
 FRONTEND_URL=https://your-frontend-domain
+```
+
+Also set the frontend environment variable on Vercel or your frontend host:
+
+```env
+VITE_API_URL=https://edulearn-backend-9btj.onrender.com
 ```
 
 The service exposes a `/health` endpoint for Render health checks.

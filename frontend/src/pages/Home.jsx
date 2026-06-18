@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getCoursesList } from '../services/api';
+import BackendStatus from '../components/BackendStatus';
 
 // Simple SVG Icons components for zero-dependency
 const SearchIcon = () => (
@@ -110,6 +111,8 @@ export default function Home() {
               Search
             </button>
           </form>
+
+          <BackendStatus />
         </div>
       </div>
 
