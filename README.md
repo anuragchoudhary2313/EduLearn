@@ -59,7 +59,7 @@ cd backend
 npm install
 ```
 
-Create a `.env` file in the backend directory:
+Copy `backend/.env.example` to `backend/.env` and fill in your values:
 
 ```env
 PORT=4000
@@ -103,6 +103,26 @@ npm run dev
 ```
 
 The frontend will run on `http://localhost:5173`
+
+## 🚀 Render Deployment
+
+The backend is ready to deploy to Render as a Node web service.
+
+1. Create a new Render Web Service from this repository.
+2. Set the root directory to `backend`.
+3. Use `npm install` as the build command and `npm start` as the start command.
+4. Add the following environment variables in Render:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+JWT_ACCESS_SECRET=your_access_secret_key
+JWT_REFRESH_SECRET=your_refresh_secret_key
+ACCESS_TOKEN_EXPIRES_IN=15m
+REFRESH_TOKEN_EXPIRES_IN=30d
+FRONTEND_URL=https://your-frontend-domain
+```
+
+The service exposes a `/health` endpoint for Render health checks.
 
 ## 📊 Database Seeding
 

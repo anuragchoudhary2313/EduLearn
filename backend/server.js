@@ -10,34 +10,64 @@ import authRoutes from './routes/auth.js';
 import apiRoutes from './routes/api.js';
 
 const app = express();
+const mongoUri = process.env.MONGODB_URI?.trim();
+const frontendUrl = process.env.FRONTEND_URL?.trim();
+const allowedOrigins = new Set([
+  frontendUrl,
+  'http://localhost:5173',
+  'https://edu-learn-coral.vercel.app'
+].filter(Boolean));
 
 // --- CORS CONFIGURATION ---
 // Setting origin to 'true' allows any domain to connect (Fixes the block)
 app.use(cors({
-    origin: true, 
-    credentials: true 
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.has(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
+    credentials: true
 }));
 // --------------------------
 
 app.use(express.json());
 app.use(cookieParser());
 
-// Connect MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch((err) => { 
-    console.error('❌ MongoDB connection error:', err.message); 
-    console.log('💡 Checking connection string...');
-    console.log('MongoDB URI exists:', !!process.env.MONGODB_URI);
-    console.log('Please check:');
-    console.log('1. Your internet connection');
-    console.log('2. MongoDB Atlas cluster is running');
-    console.log('3. Your IP address is whitelisted in MongoDB Atlas');
-  });
+app.get('/health', (_req, res) => {
+  res.json({ ok: true });
+});
+
+if (!mongoUri) {
+  console.error('❌ Missing MONGODB_URI environment variable.');
+  console.error('Create a backend/.env file from backend/.env.example before starting the server.');
+  process.exit(1);
+}
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api', apiRoutes);
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`🚀 Server started on ${PORT}`));
+
+async function startServer() {
+  try {
+    await mongoose.connect(mongoUri);
+    console.log('✅ MongoDB connected');
+
+    app.listen(PORT, () => console.log(`🚀 Server started on ${PORT}`));
+  } catch (err) {
+    console.error('❌ MongoDB connection error:', err.message);
+    console.log('💡 Checking connection string...');
+    console.log('MongoDB URI exists:', !!mongoUri);
+    console.log('Please check:');
+    console.log('1. Your internet connection');
+    console.log('2. MongoDB Atlas cluster is running');
+    console.log('3. Your IP address is whitelisted in MongoDB Atlas');
+    process.exit(1);
+  }
+}
+
+startServer();
