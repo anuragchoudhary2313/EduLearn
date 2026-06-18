@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const API = (import.meta.env.VITE_API_URL || 'http://localhost:4000').replace(/\/+$/, '');
 
 export default function BackendStatus() {
   const [status, setStatus] = useState('loading');

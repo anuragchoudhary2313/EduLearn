@@ -5,7 +5,7 @@ import { getQuizzes, generateQuizFromPdf, saveQuiz } from '../services/api';
 import { getCourseWithModules } from '../services/api'; // To check instructor status
 import CourseHeader from '../components/CourseHeader';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const API = (import.meta.env.VITE_API_URL || 'http://localhost:4000').replace(/\/+$/, '');
 
 export default function CourseQuizzes() {
   const { id } = useParams();

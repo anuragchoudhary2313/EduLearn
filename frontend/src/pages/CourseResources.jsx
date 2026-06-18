@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { getCourseWithModules } from '../services/api'; // Re-use existing API
 import CourseHeader from '../components/CourseHeader';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const API = (import.meta.env.VITE_API_URL || 'http://localhost:4000').replace(/\/+$/, '');
 
 export default function CourseResources() {
   const { id } = useParams();

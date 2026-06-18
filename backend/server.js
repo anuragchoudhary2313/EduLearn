@@ -11,18 +11,19 @@ import apiRoutes from './routes/api.js';
 
 const app = express();
 const mongoUri = process.env.MONGODB_URI?.trim();
-const frontendUrl = process.env.FRONTEND_URL?.trim();
+const normalizeUrl = (value) => value?.trim().replace(/\/+$/, '');
+const frontendUrl = normalizeUrl(process.env.FRONTEND_URL);
 const allowedOrigins = new Set([
   frontendUrl,
-  'http://localhost:5173',
-  'https://edu-learn-coral.vercel.app'
+  normalizeUrl('http://localhost:5173'),
+  normalizeUrl('https://edu-learn-coral.vercel.app')
 ].filter(Boolean));
 
 // --- CORS CONFIGURATION ---
 // Setting origin to 'true' allows any domain to connect (Fixes the block)
 app.use(cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.has(origin)) {
+      if (!origin || allowedOrigins.has(normalizeUrl(origin))) {
         callback(null, true);
         return;
       }

@@ -128,6 +128,8 @@ REFRESH_TOKEN_EXPIRES_IN=30d
 FRONTEND_URL=https://your-frontend-domain
 ```
 
+Use the origin only, without a trailing slash.
+
 Also set the frontend environment variable on Vercel or your frontend host:
 
 ```env

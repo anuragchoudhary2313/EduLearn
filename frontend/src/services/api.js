@@ -1,4 +1,4 @@
-﻿const API = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+﻿const API = (import.meta.env.VITE_API_URL || 'http://localhost:4000').replace(/\/+$/, '');
 
 // 1. Public Course List (with Search & Filter)
 export async function getCoursesList(search = '', minPrice = '', maxPrice = '') {

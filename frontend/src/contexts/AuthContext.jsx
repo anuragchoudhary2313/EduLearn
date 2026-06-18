@@ -1,5 +1,5 @@
 ﻿import React, { createContext, useContext, useEffect, useState } from 'react';
-const API = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const API = (import.meta.env.VITE_API_URL || 'http://localhost:4000').replace(/\/+$/, '');
 const ACCESS_TOKEN_KEY = 'edulearn_access';
 const REFRESH_TOKEN_KEY = 'edulearn_refresh';
 
