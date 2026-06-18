@@ -7,15 +7,34 @@ const isRenderEnvironment = Boolean(
 );
 
 if (isRenderEnvironment) {
-  console.log('Render environment detected; skipping nodemon and allowing the start command to run.');
-  process.exit(0);
+  console.log('Render environment detected; installing dependencies for the start command.');
+
+  const install = spawn('npm', ['install', '--omit=dev'], {
+    stdio: 'inherit',
+    shell: true,
+  });
+
+  install.on('exit', (code) => {
+    if (code !== 0) {
+      process.exit(code ?? 1);
+      return;
+    }
+
+    console.log('Dependencies installed; allowing the start command to run.');
+    process.exit(0);
+  });
+
+  install.on('error', (error) => {
+    console.error(error);
+    process.exit(1);
+  });
+} else {
+  const child = spawn('nodemon', ['server.js'], {
+    stdio: 'inherit',
+    shell: true,
+  });
+
+  child.on('exit', (code) => {
+    process.exit(code ?? 0);
+  });
 }
-
-const child = spawn('nodemon', ['server.js'], {
-  stdio: 'inherit',
-  shell: true,
-});
-
-child.on('exit', (code) => {
-  process.exit(code ?? 0);
-});
